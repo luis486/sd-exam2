@@ -10,53 +10,19 @@ Cada ejercicio debe de ser desplegado en un namespace que contenga el nombre del
 
 1. Se crea una aplicación sencilla en go con el siguiente código:
 
-package main
+![image](https://github.com/luis486/sd-exam2/assets/71047563/ae12a6d9-0e76-4ed0-b251-76c9cf276c6f)
 
-import (
-	"fmt"
-	"net/http"
-)
-
-func handler(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "¡Hola desde mi aplicación en Go!")
-}
-
-func healthCheck(w http.ResponseWriter, r *http.Request) {
-	w.WriteHeader(http.StatusOK)
-	w.Write([]byte("OK"))
-}
-
-func main() {
-	http.HandleFunc("/", handler)
-	http.HandleFunc("/health", healthCheck)
-
-	fmt.Println("Servidor escuchando en el puerto 8080...")
-	http.ListenAndServe(":8080", nil)
 
 2. Se crea un archivo Docerfile para crear el manifiesto y se subió al repositorio de Dockerhub luis486/go
 
-**Utilizamos una imagen de Go específica**
-FROM golang:1.14.2
+![image](https://github.com/luis486/sd-exam2/assets/71047563/00ad0223-adc4-40af-a8b0-629c04cee6ff)
 
-**Establecemos el directorio de trabajo dentro del contenedor**
-WORKDIR /go/app
-
-**Agregamos todos los archivos del directorio actual al directorio de trabajo del contenedor**
-ADD . .
-
-**Compilamos la aplicación antes de ejecutarla**
-RUN go build -o main .
-
-EXPOSE 8080
-
-**Comando para ejecutar la aplicación al iniciar el contenedor**
-CMD ["./main"]
 
 3.  Luego con el comando helm create se crea la carpeta donde se guardará nuestro chart con las configuraciones propuestas para el examen
 
 ![image](https://github.com/luis486/sd-exam2/assets/71047563/3ba970a0-1579-4385-a4e6-ef9912dd5a1c)
 
-4. Se instala el chart con _helm -n luismurcia install go ._  (donde primero debemos crear el namespace como lo conocemos siempre) 
+4. Se instala el chart con _helm -n luismurcia install go ._  (donde primero debemos crear el namespace como lo conocemos siempre).
 
 5. Por último, se prueba con el comando _kubectl get svc,po,deploy_ y como se tiene el servicio de ClusterIP, se debe hacer un port-forward con _kubectl -n luismurcia port-forward svc/go 8080:8080_ y listo
 
